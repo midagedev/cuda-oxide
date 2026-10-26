@@ -1,5 +1,10 @@
 # CUDA Rust
 
+<p align="center">
+  <a href="https://github.com/NVIDIA/cuda-rust/actions/workflows/ci-status.yml"><img alt="Build" src="https://img.shields.io/github/actions/workflow/status/NVIDIA/cuda-rust/ci-status.yml?label=build"></a>
+  <a href="https://nvidia.github.io/cuda-rust/"><img alt="Docs" src="https://img.shields.io/badge/docs-latest-blue.svg"></a>
+</p>
+
 CUDA Rust is NVIDIA's CUDA platform for Rust. It provides
 host-side crates for working with the CUDA driver and device-side crates and
 tools for writing GPU kernels in idiomatic Rust.
@@ -37,7 +42,7 @@ shape its direction by sharing feedback on your experience.
 | Safety | Data-race freedom for disjoint slice accesses; you control thread synchronization and shared memory | Data-race freedom by construction within a kernel: no explicit thread indexing, shared memory, or synchronization |
 | Indexing | Explicit thread/block indices | Implicit via partitions |
 | Compiles | Ahead of time, Rust → PTX | JIT at first launch, Rust → Tile IR → cubin |
-| Toolchain | Pinned nightly, managed by `cargo oxide` | Stable Rust 1.89 or newer |
+| Toolchain | Pinned stable Rust (`1.99.1`), managed by `cargo oxide` | Stable Rust 1.89 or newer |
 | Portability | Produces PTX that the driver compiles for compatible GPUs; you control tuning per GPU | CUDA architecture-agnostic; the compiler tunes per GPU |
 | Reach for it when | You need direct control over threads, warps, shared memory, TMA, or cluster ops | Your problem is naturally expressed as tensor computations and you want the compiler to handle scheduling details |
 
@@ -76,19 +81,13 @@ are documented in the cutile-rs book.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for commit sign-off requirements, pull requests, and CI. Toolchain requirements differ between the two: cutile-rs builds on stable Rust, cuda-oxide needs its pinned nightly via `cargo oxide`; each book covers its own.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for commit sign-off requirements, pull requests, and CI. Both components build on stable Rust and pin their toolchains in their respective `rust-toolchain.toml` files (with `rustc-dev` and `llvm-tools` for `cuda-oxide`, managed via `cargo oxide`); each book covers its own setup.
 
 ## License
 
 CUDA Rust is licensed under the [Apache License 2.0](./LICENSE). The root
-`LICENSE` covers the whole repository. Each component also includes a copy with
-its sources and built artifacts.
-
-| Component | License | License file |
-| --- | --- | --- |
-| `cuda-oxide` | Apache-2.0 | root [`LICENSE`](./LICENSE) |
-| `cutile-rs` | Apache-2.0 | [`cutile-rs/LICENSE`](./cutile-rs/LICENSE) |
-| `cuda-bindings`, `cuda-core`, `cuda-core-derive`, `cuda-async` | Apache-2.0 | root [`LICENSE`](./LICENSE) |
+`LICENSE` covers the whole repository: cuda-oxide, cutile-rs, and the shared
+host crates. Every published crate declares `license = "Apache-2.0"`.
 
 Third-party attributions are listed in
 [`cuda-oxide/THIRD_PARTY_NOTICES`](./cuda-oxide/THIRD_PARTY_NOTICES).
